@@ -1,0 +1,5 @@
+{
+  "buildCommand": "cd party-invite-rsvp && npm install && npm run build",
+  "outputDirectory": "party-invite-rsvp/.next",
+  "framework": "nextjs"
+}
