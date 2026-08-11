@@ -39,10 +39,8 @@ export function startAuth0Login(connection: 'google-oauth2' | 'email', loginHint
     const challenge = b64url(createHash('sha256').update(verifier).digest())
     const state = b64url(randomBytes(16))
 
-    // Must be declared before the request handler closure captures it.
-    // Set in the listen callback; browser URL is only opened after it's set,
-    // so any incoming request will always see the correct value.
-    let redirectUri = ''
+    const CALLBACK_PORT = 58237
+    const redirectUri = `http://localhost:${CALLBACK_PORT}/callback`
 
     _server = http.createServer(async (req, res) => {
       const reqUrl = new URL(req.url!, `http://localhost`)
@@ -89,13 +87,16 @@ export function startAuth0Login(connection: 'google-oauth2' | 'email', loginHint
       }
     })
 
+    _server.on('error', (err: NodeJS.ErrnoException) => {
+      console.error(`[auth0] Callback server error on port ${CALLBACK_PORT}:`, err.message)
+      closeCallbackServer()
+      reject(new Error(`Failed to start Auth0 callback server: ${err.message}`))
+    })
+
     // 5-minute timeout for standard login flows
     _timeout = setTimeout(closeCallbackServer, 5 * 60 * 1000)
 
-    _server.listen(0, '127.0.0.1', () => {
-      const port = (_server!.address() as { port: number }).port
-      redirectUri = `http://localhost:${port}/callback`
-
+    _server.listen(CALLBACK_PORT, '127.0.0.1', () => {
       const params = new URLSearchParams({
         response_type: 'code',
         client_id: CLIENT_ID,
