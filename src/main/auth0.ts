@@ -4,7 +4,7 @@ import { shell } from 'electron'
 import type { BrowserWindow } from 'electron'
 
 const DOMAIN = 'dev-2i4tejj40hsqtzi0.us.auth0.com'
-const CLIENT_ID = 'bARwsSD5s2dckHhkzu9gu2orFX8cGJxM'
+const CLIENT_ID = 'lDNSOTrSDhjUEXGn2pQAKpTePQF0Kyfh'
 
 let _win: BrowserWindow | null = null
 let _server: http.Server | null = null
