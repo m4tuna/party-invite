@@ -14,13 +14,16 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
 /*
 -- Run in Supabase SQL editor once:
 -- CREATE TABLE party_invite_parties (
---   id           uuid PRIMARY KEY DEFAULT gen_random_uuid(),
---   host_user_id text NOT NULL,
---   name         text NOT NULL,
---   date         timestamptz,
---   location     text,
---   description  text,
---   created_at   timestamptz DEFAULT now()
+--   id               uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+--   host_user_id     text NOT NULL,
+--   name             text NOT NULL,
+--   date             timestamptz,
+--   location         text,
+--   description      text,
+--   emoji            text,
+--   accent_color     text,
+--   cover_image_url  text,
+--   created_at       timestamptz DEFAULT now()
 -- );
 -- CREATE TABLE party_invite_guests (
 --   id              uuid PRIMARY KEY DEFAULT gen_random_uuid(),

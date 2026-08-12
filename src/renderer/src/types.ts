@@ -4,6 +4,9 @@ export interface Party {
   date: string | null
   location: string | null
   description: string | null
+  emoji: string | null
+  accent_color: string | null
+  cover_image_url: string | null
   created_at: string
 }
 

@@ -13,7 +13,7 @@ export function registerIpcHandlers(win: BrowserWindow) {
   })
 
   // Parties
-  ipcMain.handle('party:createParty', async (_, data: { name: string; date?: string; location?: string; description?: string }) => {
+  ipcMain.handle('party:createParty', async (_, data: { name: string; date?: string; location?: string; description?: string; emoji?: string; accent_color?: string }) => {
     const auth = store.get('auth')
     if (!auth?.user) throw new Error('Not authenticated')
     // Decode sub from idToken (JWT payload)
@@ -114,5 +114,20 @@ export function registerIpcHandlers(win: BrowserWindow) {
       resend: resend ? { apiKey: '•'.repeat(Math.max(0, resend.apiKey.length - 4)) + resend.apiKey.slice(-4) } : null,
       twilio: twilio ? { sid: twilio.sid, token: '•'.repeat(Math.max(0, twilio.token.length - 4)) + twilio.token.slice(-4), from: twilio.from } : null,
     }
+  })
+
+  // Cover image upload
+  ipcMain.handle('party:uploadCoverImage', async (_, { partyId, imageData, mimeType }: { partyId: string; imageData: string; mimeType: string }) => {
+    const ext = mimeType.includes('png') ? 'png' : 'jpg'
+    const path = `${partyId}/cover.${ext}`
+    const buffer = Buffer.from(imageData, 'base64')
+    const { error } = await supabase.storage
+      .from('party-invite-images')
+      .upload(path, buffer, { contentType: mimeType, upsert: true })
+    if (error) throw error
+    const { data } = supabase.storage.from('party-invite-images').getPublicUrl(path)
+    // Store public URL in the party row
+    await supabase.from('party_invite_parties').update({ cover_image_url: data.publicUrl }).eq('id', partyId)
+    return data.publicUrl
   })
 }

@@ -11,7 +11,7 @@ declare global {
       logout: () => Promise<void>
       login: () => void
       saveAuth: (auth: { idToken: string; accessToken: string; user: unknown }) => Promise<void>
-      createParty: (data: { name: string; date?: string; location?: string; description?: string }) => Promise<import('./types').Party>
+      createParty: (data: { name: string; date?: string; location?: string; description?: string; emoji?: string; accent_color?: string }) => Promise<import('./types').Party>
       listParties: () => Promise<import('./types').Party[]>
       getParty: (id: string) => Promise<{ party: import('./types').Party; guests: Guest[] }>
       setCurrentParty: (id: string) => Promise<void>
@@ -22,6 +22,7 @@ declare global {
       sendInvites: (data: { guestIds: string[]; via: string[] }) => Promise<{ sent: string[]; failed: Array<{ id: string; error: string }> }>
       saveCredentials: (data: { resend?: { apiKey: string }; twilio?: { sid: string; token: string; from: string } }) => Promise<void>
       getCredentials: () => Promise<{ resend: { apiKey: string } | null; twilio: { sid: string; token: string; from: string } | null }>
+      uploadCoverImage: (data: { partyId: string; imageData: string; mimeType: string }) => Promise<string>
       onGuestUpdated: (cb: (guest: Guest) => void) => () => void
       onAuth0Tokens: (cb: (data: { idToken: string; accessToken: string; user: unknown }) => void) => () => void
     }

@@ -31,6 +31,8 @@ const api = {
     ipcRenderer.on('auth0:tokens', h)
     return () => ipcRenderer.off('auth0:tokens', h)
   },
+  uploadCoverImage: (data: { partyId: string; imageData: string; mimeType: string }) =>
+    ipcRenderer.invoke('party:uploadCoverImage', data),
 }
 
 contextBridge.exposeInMainWorld('api', api)

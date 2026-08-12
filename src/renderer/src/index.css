@@ -6,16 +6,22 @@
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
-  background: transparent;
+  background: #0f0f0f;
   color: #fff;
   -webkit-font-smoothing: antialiased;
+  margin: 0;
+  padding: 0;
 }
 
 #root {
-  background: transparent;
+  background: #0f0f0f;
   min-height: 100vh;
 }
 
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
+
+input, textarea, select {
+  font-family: inherit;
+}
